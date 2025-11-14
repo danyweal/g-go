@@ -1,0 +1,62 @@
+// firestore.rules
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Top-level media docs
+    match /media/{docId} {
+      allow read: if true;
+
+      // Allow authenticated users to CREATE a media doc that matches the UploadMediaForm shape.
+      // We keep updates/deletes blocked so only your admin tools can change them later.
+      allow create: if request.auth != null
+                    // uploader must be the signed-in user (anonymous is fine)
+                    && request.resource.data.uploaderId == request.auth.uid
+                    // required fields present & type-checked
+                    && request.resource.data.type in ['image', 'video']
+                    && request.resource.data.url is string
+                    && request.resource.data.storagePath is string
+                    && request.resource.data.caption is string
+                    // createdAt must be provided (serverTimestamp() resolves after write)
+                    && request.resource.data.createdAt != null
+                    // counters start predictable
+                    && request.resource.data.likesCount == 0
+                    && request.resource.data.commentCount == 0
+                    // reactionCounts must be a map (object)
+                    && request.resource.data.reactionCounts is map;
+
+      // No client updates/deletes (keep moderation/admin via server/API)
+      allow update, delete: if false;
+    }
+
+    // Comments under each media
+    match /media/{mediaId}/comments/{commentId} {
+      // Only show approved comments
+      allow read: if resource.data.approved == true;
+
+      // Any authenticated (including anonymous) user can create pending comment
+      allow create: if request.auth != null
+                    && request.resource.data.approved == false
+                    && request.resource.data.authorId == request.auth.uid
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.createdAt != null;
+
+      // No client updates/deletes
+      allow update, delete: if false;
+    }
+
+    // Likes subcollection
+    match /media/{mediaId}/likes/{userId} {
+      allow read: if true;
+      allow create, delete: if request.auth != null && request.auth.uid == userId;
+      allow update: if false;
+    }
+
+    // Everything else is denied by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="800" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Subtle wavy stripe pattern in white with low opacity -->
+    <pattern id="waves" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0,10 Q5,0 10,10 T20,10" stroke="white" stroke-opacity="0.15" fill="none" stroke-width="0.8"/>
+      <path d="M0,15 Q5,5 10,15 T20,15" stroke="white" stroke-opacity="0.15" fill="none" stroke-width="0.8"/>
+    </pattern>
+
+    <!-- Subtle scribble region pattern in white with low opacity -->
+    <pattern id="scribble" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0,0 L10,10 M-2,2 L2,-2 M8,12 L12,8" stroke="white" stroke-opacity="0.1" stroke-width="0.4"/>
+    </pattern>
+
+    <!-- Fine net pattern in white with low opacity -->
+    <pattern id="net" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0,5 L5,0 L10,5 L5,10 Z" fill="none" stroke="white" stroke-opacity="0.08" stroke-width="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Apply patterns with consistent layout -->
+  <rect x="0" y="0" width="50" height="200" fill="url(#waves)"/>
+  <rect x="50" y="0" width="10" height="200" fill="black"/>
+  <rect x="60" y="0" width="20" height="200" fill="url(#scribble)"/>
+  <rect x="80" y="0" width="120" height="200" fill="url(#net)"/>
+</svg>

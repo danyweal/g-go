@@ -1,0 +1,344 @@
+/* styles/typography.css */
+
+/* ---------------------------
+   0) Base tokens (inherits colors from globals.css)
+   --------------------------- */
+:root {
+  --font-sans: var(--font-stack, 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --text-0: var(--text, #1f2937);
+  --text-muted: var(--pal-muted, #6b7280);
+  --text-contrast: var(--pal-white, #fff);
+
+  --link: var(--pal-green, #009739);
+  --link-hover: #007a2d;
+
+  --border-subtle: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.15);
+  --border-dark-subtle: rgba(255,255,255,.14);
+
+  --bg-inline-code: rgba(0,0,0,.04);
+  --bg-inline-code-dark: rgba(255,255,255,.08);
+
+  --bg-pre: #0f172a;          /* slate-900-ish */
+  --bg-pre-dark: #0b1220;     /* a touch darker */
+
+  --shadow-soft: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px -12px rgba(0,0,0,.12);
+}
+
+/* Improve selection contrast */
+::selection {
+  background: color-mix(in srgb, var(--pal-green), transparent 70%);
+  color: currentColor;
+}
+
+/* ---------------------------
+   1) Heading utilities
+   Use on any element: .h1 ... .h6
+   --------------------------- */
+.h1 { font-size: clamp(2.25rem, 1.6rem + 2vw, 3.25rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+.h2 { font-size: clamp(1.875rem, 1.4rem + 1.3vw, 2.5rem); line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; }
+.h3 { font-size: clamp(1.5rem, 1.2rem + .8vw, 2rem); line-height: 1.2; font-weight: 800; }
+.h4 { font-size: clamp(1.25rem, 1.05rem + .5vw, 1.5rem); line-height: 1.25; font-weight: 700; }
+.h5 { font-size: 1.125rem; line-height: 1.35; font-weight: 700; }
+.h6 { font-size: 1rem; line-height: 1.4; font-weight: 700; }
+
+/* Gradient heading helper (pairs with globals.css .gradient-text) */
+.heading-gradient { background: linear-gradient(90deg, var(--pal-green), var(--pal-white), var(--pal-red)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Eyebrow / kicker */
+.eyebrow {
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: .18em;
+  font-weight: 700;
+  color: var(--pal-green);
+}
+
+/* Lead paragraph for opening statements */
+.lead {
+  font-size: clamp(1.125rem, .95rem + .6vw, 1.375rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--text-0), white 10%);
+}
+
+/* Soft muted text */
+.muted { color: var(--text-muted); }
+
+/* Comfortable reading measure */
+.measure { max-width: 70ch; }
+
+/* Small caps helper */
+.smallcaps { font-variant-caps: small-caps; letter-spacing: .02em; }
+
+/* Drop cap (use on first paragraph: .dropcap) */
+.dropcap:first-letter {
+  float: inline-start;
+  font-size: 3.5em;
+  font-weight: 800;
+  line-height: .9;
+  margin: .05em .25em 0 0;
+  color: var(--pal-red);
+}
+
+/* Subtle text shadow for hero titles */
+.text-shadow-soft {
+  text-shadow: 0 1px 0 rgba(0,0,0,.05), 0 12px 28px rgba(0,0,0,.12);
+}
+
+/* ---------------------------
+   2) Prose – rich content styling
+   Add `class="prose"` to a content wrapper.
+   --------------------------- */
+.prose {
+  font-family: var(--font-sans);
+  color: var(--text-0);
+}
+
+/* Headings inside prose */
+.prose :where(h1,h2,h3,h4,h5,h6) {
+  color: var(--text-0);
+  margin-top: 1.6em;
+  margin-bottom: .6em;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.prose :where(h1) { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.1; }
+.prose :where(h2) { font-size: clamp(1.75rem, 1.3rem + 1.2vw, 2.25rem); line-height: 1.15; }
+.prose :where(h3) { font-size: clamp(1.375rem, 1.15rem + .6vw, 1.75rem); line-height: 1.2; }
+.prose :where(h4) { font-size: 1.125rem; line-height: 1.25; }
+
+/* Paragraphs */
+.prose :where(p) {
+  margin-block: 1rem;
+  color: color-mix(in srgb, var(--text-0), black 0%);
+}
+
+/* Links */
+.prose :where(a) {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+.prose :where(a:hover) {
+  color: var(--link-hover);
+  text-decoration-color: currentColor;
+}
+
+/* Lists */
+.prose :where(ul,ol) {
+  padding-inline-start: 1.25em;
+  margin: .75rem 0 1rem;
+}
+.prose :where(ul) { list-style: disc; }
+.prose :where(ol) { list-style: decimal; }
+.prose :where(li) { margin: .35rem 0; }
+.prose :where(li > ul) { margin-top: .35rem; }
+
+/* Blockquote */
+.prose :where(blockquote) {
+  margin: 1.25rem 0;
+  padding: .75rem 1rem;
+  border-inline-start: 4px solid var(--pal-green);
+  background: color-mix(in srgb, var(--pal-green), transparent 92%);
+  color: color-mix(in srgb, var(--text-0), black 5%);
+  border-radius: .75rem;
+}
+
+/* Inline code */
+.prose :where(code) {
+  font-family: var(--font-mono);
+  font-size: .925em;
+  background: var(--bg-inline-code);
+  padding: .15rem .4rem;
+  border-radius: .4rem;
+  border: 1px solid var(--border-subtle);
+}
+
+/* Preformatted code blocks */
+.prose :where(pre) {
+  font-family: var(--font-mono);
+  font-size: .95rem;
+  line-height: 1.55;
+  background: var(--bg-pre);
+  color: #e5e7eb;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  overflow: auto;
+  box-shadow: var(--shadow-soft);
+}
+.prose :where(pre) code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* Tables */
+.prose :where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: .95rem;
+}
+.prose :where(th,td) {
+  padding: .6rem .75rem;
+  border: 1px solid var(--border-subtle);
+}
+.prose :where(th) {
+  background: color-mix(in srgb, var(--pal-green), white 92%);
+  font-weight: 700;
+  text-align: start;
+}
+
+/* Figure & caption */
+.prose :where(figure) { margin: 1.25rem 0; }
+.prose :where(figcaption) {
+  color: var(--text-muted);
+  font-size: .9rem;
+  margin-top: .35rem;
+}
+
+/* Horizontal rule */
+.prose :where(hr) {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  margin: 2.5rem 0 1.75rem;
+}
+
+/* Superscript / subscript */
+.prose :where(sup, sub) { font-size: .8em; }
+
+/* Mark highlight */
+.prose :where(mark) {
+  background: color-mix(in srgb, var(--pal-accent), transparent 70%);
+  padding: .05em .2em;
+  border-radius: .25em;
+}
+
+/* Badges / callouts inside prose */
+.prose :where(.badge) {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pal-green), white 85%);
+  color: var(--pal-dark);
+}
+
+/* ---------------------------
+   3) RTL support (Arabic content)
+   Apply `.rtl` to a container (or set dir="rtl")
+   --------------------------- */
+.rtl, [dir="rtl"] { direction: rtl; }
+.rtl .prose :where(blockquote),
+[dir="rtl"] .prose :where(blockquote) {
+  border-inline-start: 0;
+  border-inline-end: 4px solid var(--pal-red);
+  text-align: start;
+}
+
+/* ---------------------------
+   4) Dark mode adjustments
+   --------------------------- */
+.dark .prose { color: var(--text-contrast); }
+.dark .prose :where(h1,h2,h3,h4,h5,h6) { color: var(--text-contrast); }
+.dark .prose :where(p) { color: color-mix(in srgb, var(--text-contrast), black 10%); }
+
+.dark .prose :where(a) { color: color-mix(in srgb, var(--pal-green), white 10%); }
+.dark .prose :where(a:hover) { color: var(--pal-green); }
+
+.dark .prose :where(blockquote) {
+  background: color-mix(in srgb, var(--pal-green), transparent 85%);
+  color: color-mix(in srgb, var(--text-contrast), black 10%);
+}
+
+.dark .prose :where(code) {
+  background: var(--bg-inline-code-dark);
+  border-color: var(--border-dark-subtle);
+}
+
+.dark .prose :where(pre) {
+  background: var(--bg-pre-dark);
+  color: #e8edf4;
+}
+
+.dark .prose :where(th,td) { border-color: var(--border-dark-subtle); }
+.dark .prose :where(th) { background: color-mix(in srgb, var(--pal-green), black 85%); }
+
+/* ---------------------------
+   5) Helper compositions
+   --------------------------- */
+
+/* Use on a hero title: .h1.heading-gradient.text-shadow-soft */
+.hero-title { letter-spacing: -0.02em; }
+
+/* Prose blocks with comfortable measure & spacing */
+.prose.prose--reading {
+  max-width: 72ch;
+  margin-inline: auto;
+}
+
+/* Tight prose (for sidebars) */
+.prose.prose--tight :where(p,ul,ol,pre,table,blockquote) { margin-block: .6rem; }
+
+/* Pull quote */
+.pullquote {
+  font-size: clamp(1.25rem, 1rem + .9vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--pal-red), transparent 88%);
+  border-radius: 1rem;
+  border-inline-start: 4px solid var(--pal-red);
+}
+.dark .pullquote {
+  background: color-mix(in srgb, var(--pal-red), transparent 82%);
+}
+
+/* Code kbd keys */
+kbd {
+  font-family: var(--font-mono);
+  font-size: .85em;
+  background: rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.12);
+  border-bottom-width: 3px;
+  padding: .15rem .4rem;
+  border-radius: .4rem;
+}
+.dark kbd {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+}
+
+/* Caption text (use for images under .prose or standalone) */
+.caption { color: var(--text-muted); font-size: .9rem; }
+
+/* Underlined variant with offset (use sparingly) */
+.u-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* Divider with flag gradient */
+.hr-flag {
+  height: 2px;
+  border: 0;
+  background: linear-gradient(90deg, var(--pal-green), var(--pal-white), var(--pal-red));
+  opacity: .9;
+}
+
+/* ---------------------------
+   6) Print tweaks (keeps contrast)
+   --------------------------- */
+@media print {
+  .prose :where(a) { color: black; text-decoration: underline; }
+  .prose :where(code, pre) { box-shadow: none !important; }
+}
